@@ -39,6 +39,7 @@ import { updateTabList } from "./utils/updateTabList";
 import { applyExpertMode } from "./utils/applyExpertMode";
 import { get as getConfig, set as setConfig } from "./ConfigStorage";
 import { parseConnectDeeplink } from "./utils/connectDeeplink";
+import { captureTuneDeeplink } from "./utils/pendingTune";
 import { getTracking } from "./Analytics";
 import semver from "semver";
 import { SHA1 } from "crypto-es";
@@ -262,6 +263,11 @@ export function initializeSerialBackend() {
 
     // After the transports are wired up: a manual/network target needs no device enumeration,
     // so a shared connect link can open right away.
+    // A shared tune link waits for an aircraft; tell the user what to do next.
+    if (captureTuneDeeplink()) {
+        gui_log(i18n.getMessage("pidTuningImportTuneLinkWaiting"));
+    }
+
     connectFromDeeplink();
 }
 

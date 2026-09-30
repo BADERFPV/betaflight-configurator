@@ -546,3 +546,21 @@ export function sameSettingValue(a: string | null, b: string): boolean {
             .toLowerCase();
     return a !== null && normalize(a) === normalize(b);
 }
+
+/**
+ * The tune code named by a `?tune=` query parameter, if it is one. Untrusted input — whatever a
+ * link contained — so only something shaped like a share code is passed on, and it still has to
+ * go through decodeTune and validateTune before anything reaches the flight controller.
+ * @param search - a URL query string, e.g. window.location.search ("?tune=BFTUNE1:…").
+ */
+export function parseTuneDeeplink(search: string): string | null {
+    let value: string | null;
+    try {
+        value = new URLSearchParams(search).get(TUNE_LINK_PARAM);
+    } catch {
+        return null;
+    }
+
+    const code = (value ?? "").replace(/\s+/g, "");
+    return code.startsWith(TUNE_CODE_PREFIX) && code.length <= MAX_CODE_LENGTH ? code : null;
+}

@@ -68,7 +68,7 @@ import FC from "@/js/fc";
 import Clipboard from "@/js/Clipboard";
 import { useConnectionStore } from "@/stores/connection";
 import { MIN_FC_VERSION_FOR_MSP_CLI, isMspCliSupported, send } from "@/composables/useMspCliSession";
-import { encodeTune, extractTune, tuneSettingCount, tuneToCliCommands } from "@/js/utils/tuneShare";
+import { encodeTune, extractTune, tuneSettingCount, tuneLink, tuneToCliCommands } from "@/js/utils/tuneShare";
 
 /** `diff` is a single CLI command, but a busy F4 can take a few seconds to print it. */
 const DIFF_TIMEOUT_MS = 10000;
@@ -88,7 +88,7 @@ const settingCount = ref(0);
 const copied = ref(false);
 
 /** Rendered from our own code string, never from outside input, so v-html is safe here. */
-const qrSvg = computed(() => (code.value ? renderSVG(code.value, { ecc: "M", border: 2 }) : ""));
+const qrSvg = computed(() => (code.value ? renderSVG(tuneLink(code.value), { ecc: "M", border: 2 }) : ""));
 
 function onOpenChange(open: boolean) {
     emit("update:modelValue", open);

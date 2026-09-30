@@ -2539,7 +2539,7 @@
         "message": "Reading the tune from the flight controller…"
     },
     "pidTuningShareTuneIntro": {
-        "message": "Send this code to another pilot. It carries only the PIDs, rates and filters of the active profiles — no ports, modes, motor or receiver settings.",
+        "message": "Send this code to another pilot, or let them scan the QR code with a phone to open it in the Betaflight App. It carries only the PIDs, rates and filters of the active profiles — no ports, modes, motor or receiver settings.",
         "description": "Explanation shown above the tune share code"
     },
     "pidTuningShareTuneQrLabel": {
@@ -2565,6 +2565,10 @@
     "pidTuningImportTune": {
         "message": "Import tune",
         "description": "Button on the PID Tuning tab that opens the Import tune dialog"
+    },
+    "pidTuningImportTuneLinkWaiting": {
+        "message": "A shared tune is waiting. Connect your aircraft to review it on the PID Tuning tab.",
+        "description": "Log message when the app was opened from a ?tune= link"
     },
     "pidTuningImportTuneTitle": {
         "message": "Import tune"

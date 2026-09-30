@@ -7,6 +7,7 @@ import {
     encodeTune,
     extractTune,
     findTuneCode,
+    parseTuneDeeplink,
     sameSettingValue,
     tuneLink,
     tuneToCliCommands,
@@ -250,5 +251,25 @@ describe("sameSettingValue", () => {
         expect(sameSettingValue("100, 100,80", "100,100,80")).toBe(true);
         expect(sameSettingValue("42", "43")).toBe(false);
         expect(sameSettingValue(null, "42")).toBe(false);
+    });
+});
+
+describe("parseTuneDeeplink", () => {
+    const code = `${TUNE_CODE_PREFIX}abc_DEF-123`;
+
+    it("reads the code from a ?tune= link", () => {
+        expect(parseTuneDeeplink(`?tune=${code}`)).toBe(code);
+        expect(parseTuneDeeplink(`?connect=wss://x:1&tune=${code}`)).toBe(code);
+    });
+
+    it.each(["", "?connect=wss://x:1", "?tune=", "?tune=hello", "?tune=javascript:alert(1)"])(
+        "ignores %j",
+        (search) => {
+            expect(parseTuneDeeplink(search)).toBe(null);
+        },
+    );
+
+    it("refuses an oversized code", () => {
+        expect(parseTuneDeeplink(`?tune=${TUNE_CODE_PREFIX}${"A".repeat(9000)}`)).toBe(null);
     });
 });

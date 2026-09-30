@@ -7,6 +7,7 @@ import { useDialogStore } from "../stores/dialog";
 import { useConnectionStore } from "../stores/connection";
 import { pinia } from "./pinia_instance";
 import { getLockManager } from "./lock_manager";
+import { hasPendingTune } from "./utils/pendingTune";
 
 /** @type {Record<string, Record<string, unknown> | undefined>} registered at runtime by each tab */
 const TABS = {};
@@ -309,7 +310,9 @@ class GuiControl {
             result.rememberLastTab && result.lastTab && this.allowedTabs.includes(result.lastTab.substring(4))
                 ? result.lastTab
                 : "tab_setup";
-        const tabKey = tabClass.substring(4);
+        // A tune shared by link is reviewed on the PID Tuning tab, so go there instead.
+        const tabKey =
+            hasPendingTune() && this.allowedTabs.includes("pid_tuning") ? "pid_tuning" : tabClass.substring(4);
 
         // Dynamic import: tab_switch.js imports this module statically, so a static
         // import back would cycle.

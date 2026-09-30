@@ -64,7 +64,7 @@
                             color="neutral"
                             variant="outline"
                             :disabled="hasChanges"
-                            @click="isImportTuneOpen = true"
+                            @click="openImportTune"
                         />
                     </UTooltip>
                     <UButton
@@ -120,7 +120,7 @@
             </div>
 
             <ShareTuneDialog v-model="isShareTuneOpen" />
-            <ImportTuneDialog v-model="isImportTuneOpen" />
+            <ImportTuneDialog v-model="isImportTuneOpen" :initial-code="importTuneCode" />
 
             <!-- Save/Revert Buttons -->
             <div class="content_toolbar toolbar_fixed_bottom flex items-center gap-2">
@@ -154,6 +154,7 @@ import RatesSubTab from "./pid-tuning/RatesSubTab.vue";
 import FilterSubTab from "./pid-tuning/FilterSubTab.vue";
 import ShareTuneDialog from "./pid-tuning/ShareTuneDialog.vue";
 import ImportTuneDialog from "./pid-tuning/ImportTuneDialog.vue";
+import { takePendingTune } from "@/js/utils/pendingTune";
 import SettingRow from "../elements/SettingRow.vue";
 import SubtabNav from "@/components/elements/SubtabNav.vue";
 import GUI from "@/js/gui";
@@ -191,6 +192,8 @@ const activeSubtab = ref("pid");
 const showAllPids = ref(false);
 const isShareTuneOpen = ref(false);
 const isImportTuneOpen = ref(false);
+/** A code from a `?tune=` link, shown once in the Import dialog. */
+const importTuneCode = ref<string | null>(null);
 const currentProfile = ref(FC.CONFIG.profile);
 const currentRateProfile = ref(0);
 const isMounted = useIsMounted();
@@ -490,6 +493,11 @@ async function resetProfile() {
     }
 }
 
+function openImportTune() {
+    importTuneCode.value = null;
+    isImportTuneOpen.value = true;
+}
+
 function toggleShowAllPids() {
     showAllPids.value = !showAllPids.value;
 }
@@ -679,6 +687,12 @@ onMounted(async () => {
     // a switch made from here counts as unsaved. A failed load leaves it untracked.
     if (await loadData()) {
         pidTuningStore.markProfileClean();
+
+        const linkedTune = takePendingTune();
+        if (linkedTune) {
+            importTuneCode.value = linkedTune;
+            isImportTuneOpen.value = true;
+        }
     }
 });
 </script>
