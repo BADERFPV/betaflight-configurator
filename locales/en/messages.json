@@ -2562,6 +2562,87 @@
     "pidTuningShareTuneVirtualMode": {
         "message": "Sharing a tune needs the CLI, which is not available in Virtual Mode."
     },
+    "pidTuningImportTune": {
+        "message": "Import tune",
+        "description": "Button on the PID Tuning tab that opens the Import tune dialog"
+    },
+    "pidTuningImportTuneTitle": {
+        "message": "Import tune"
+    },
+    "pidTuningImportTuneIntro": {
+        "message": "Paste a tune code or link from another pilot. You will see every change before anything is written."
+    },
+    "pidTuningImportTunePlaceholder": {
+        "message": "BFTUNE1:…"
+    },
+    "pidTuningImportTuneNext": {
+        "message": "Preview"
+    },
+    "pidTuningImportTuneBack": {
+        "message": "Back"
+    },
+    "pidTuningImportTuneInvalid": {
+        "message": "This is not a tune code. It should start with BFTUNE1:"
+    },
+    "pidTuningImportTuneDamaged": {
+        "message": "This tune code is damaged or incomplete. Ask for it again."
+    },
+    "pidTuningImportTuneReading": {
+        "message": "Reading the current values from the flight controller…"
+    },
+    "pidTuningImportTuneTarget": {
+        "message": "The tune will be applied to PID profile {{profile}} and rate profile {{rateProfile}}.",
+        "description": "Shown above the import preview; profile numbers are 1-based as in the profile selector"
+    },
+    "pidTuningImportTuneRpmTitle": {
+        "message": "This tune was made with RPM filtering, which is off on this aircraft",
+        "description": "Warning title in the Import tune dialog"
+    },
+    "pidTuningImportTuneRpmText": {
+        "message": "Its filters are tuned lighter because RPM filtering was removing motor noise. Without it they may let too much noise through, which can make motors hot or burn them. Enable bidirectional DShot and RPM filtering first, or check motor temperature after a short hover."
+    },
+    "pidTuningImportTuneRpmAcknowledge": {
+        "message": "I understand and will check motor temperature"
+    },
+    "pidTuningImportTuneFirmware": {
+        "message": "This tune was made on firmware {{theirs}} and this aircraft runs {{ours}}. Settings that do not exist here are skipped."
+    },
+    "pidTuningImportTuneNothingChanges": {
+        "message": "This aircraft already has this tune — nothing would change."
+    },
+    "pidTuningImportTuneSetting": {
+        "message": "Setting"
+    },
+    "pidTuningImportTuneCurrent": {
+        "message": "Current"
+    },
+    "pidTuningImportTuneNew": {
+        "message": "New"
+    },
+    "pidTuningImportTuneUnchanged": {
+        "message": "{{count}} settings already match and are left as they are."
+    },
+    "pidTuningImportTuneSkipped": {
+        "message": "Skipped (not part of a tune, or not in this firmware): {{names}}"
+    },
+    "pidTuningImportTuneRebootNote": {
+        "message": "Applying saves the settings and restarts the flight controller."
+    },
+    "pidTuningImportTuneApply": {
+        "message": "Apply and save"
+    },
+    "pidTuningImportTuneApplying": {
+        "message": "Writing settings… {{done}} / {{total}}"
+    },
+    "pidTuningImportTuneErrors": {
+        "message": "The flight controller refused some settings. Save the ones it accepted, or discard everything?"
+    },
+    "pidTuningImportTuneSaveAnyway": {
+        "message": "Save the rest"
+    },
+    "pidTuningImportTuneDiscard": {
+        "message": "Discard"
+    },
     "pidTuningShareTuneError": {
         "message": "Could not read the tune from the flight controller: {{error}}"
     },

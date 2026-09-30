@@ -6,6 +6,9 @@ import {
     decodeTune,
     encodeTune,
     extractTune,
+    findTuneCode,
+    sameSettingValue,
+    tuneLink,
     tuneToCliCommands,
     validateTune,
 } from "../../src/js/utils/tuneShare";
@@ -215,4 +218,37 @@ profile 1
 it("keeps one entry per setting when a diff repeats a line", () => {
     const tune = extractTune(["# master", "set dyn_notch_q = 300", "set dyn_notch_q = 500"]);
     expect(tune.master).toEqual([{ name: "dyn_notch_q", value: "500" }]);
+});
+
+describe("findTuneCode", () => {
+    const code = `${TUNE_CODE_PREFIX}abc_DEF-123`;
+
+    it.each([
+        [code, code],
+        [`  ${code}\n`, code],
+        [`https://app.betaflight.com/?tune=${code}`, code],
+        [`https://app.betaflight.com/?connect=wss://x:1&tune=${code}`, code],
+    ])("finds the code in %j", (input, expected) => {
+        expect(findTuneCode(input)).toBe(expected);
+    });
+
+    it.each(["", "hello", "https://app.betaflight.com/", "https://example.com/?tune=nope", "javascript:alert(1)"])(
+        "finds nothing in %j",
+        (input) => {
+            expect(findTuneCode(input)).toBe(null);
+        },
+    );
+
+    it("round-trips through a link", () => {
+        expect(findTuneCode(tuneLink(code))).toBe(code);
+    });
+});
+
+describe("sameSettingValue", () => {
+    it("ignores case and spacing around commas", () => {
+        expect(sameSettingValue("RP", "rp")).toBe(true);
+        expect(sameSettingValue("100, 100,80", "100,100,80")).toBe(true);
+        expect(sameSettingValue("42", "43")).toBe(false);
+        expect(sameSettingValue(null, "42")).toBe(false);
+    });
 });

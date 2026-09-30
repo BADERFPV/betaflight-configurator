@@ -497,3 +497,52 @@ export async function decodeTune(code: string): Promise<SharedTune> {
         tune: { master: unpack(payload.m), profile: unpack(payload.p), rateprofile: unpack(payload.r) },
     };
 }
+
+/* ------------------------------------------------------------------------------------------------
+ * Links. A QR code can carry the tune as `https://app.betaflight.com/?tune=BFTUNE1:...`, following
+ * the `?connect=` deeplink: a phone camera opens the app, and the app offers the import.
+ * --------------------------------------------------------------------------------------------- */
+
+export const TUNE_LINK_BASE = "https://app.betaflight.com/";
+export const TUNE_LINK_PARAM = "tune";
+
+export function tuneLink(code: string): string {
+    return `${TUNE_LINK_BASE}?${TUNE_LINK_PARAM}=${code}`;
+}
+
+/**
+ * The share code in whatever the user pasted or a link carried: the bare code, or a link with a
+ * `tune` parameter. Returns null when there is no code in it. The code is not decoded here.
+ */
+export function findTuneCode(text: string): string | null {
+    const trimmed = text.trim();
+    const compact = trimmed.replace(/\s+/g, "");
+
+    if (compact.startsWith(TUNE_CODE_PREFIX)) {
+        return compact;
+    }
+
+    try {
+        const value = new URL(trimmed).searchParams.get(TUNE_LINK_PARAM)?.replace(/\s+/g, "");
+        return value?.startsWith(TUNE_CODE_PREFIX) ? value : null;
+    } catch {
+        return null;
+    }
+}
+
+/** One row of the import preview. */
+export interface TuneChange extends TuneSetting {
+    section: TuneSection;
+    /** The value on the flight controller now, or null when this firmware has no such setting. */
+    current: string | null;
+}
+
+/** Settings compare as the CLI prints them: case and spacing around commas do not matter. */
+export function sameSettingValue(a: string | null, b: string): boolean {
+    const normalize = (value: string) =>
+        value
+            .replace(/\s*,\s*/g, ",")
+            .trim()
+            .toLowerCase();
+    return a !== null && normalize(a) === normalize(b);
+}

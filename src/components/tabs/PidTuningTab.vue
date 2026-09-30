@@ -57,6 +57,16 @@
                             @click="isShareTuneOpen = true"
                         />
                     </UTooltip>
+                    <UTooltip :text="$t('pidTuningShareTuneSaveFirst')" :disabled="!hasChanges">
+                        <UButton
+                            :label="$t('pidTuningImportTune')"
+                            icon="i-lucide-download"
+                            color="neutral"
+                            variant="outline"
+                            :disabled="hasChanges"
+                            @click="isImportTuneOpen = true"
+                        />
+                    </UTooltip>
                     <UButton
                         v-if="activeSubtab === 'pid'"
                         :label="$t('pidTuningCopyProfile')"
@@ -110,6 +120,7 @@
             </div>
 
             <ShareTuneDialog v-model="isShareTuneOpen" />
+            <ImportTuneDialog v-model="isImportTuneOpen" />
 
             <!-- Save/Revert Buttons -->
             <div class="content_toolbar toolbar_fixed_bottom flex items-center gap-2">
@@ -142,6 +153,7 @@ import PidSubTab from "./pid-tuning/PidSubTab.vue";
 import RatesSubTab from "./pid-tuning/RatesSubTab.vue";
 import FilterSubTab from "./pid-tuning/FilterSubTab.vue";
 import ShareTuneDialog from "./pid-tuning/ShareTuneDialog.vue";
+import ImportTuneDialog from "./pid-tuning/ImportTuneDialog.vue";
 import SettingRow from "../elements/SettingRow.vue";
 import SubtabNav from "@/components/elements/SubtabNav.vue";
 import GUI from "@/js/gui";
@@ -178,6 +190,7 @@ const expertModeEnabled = computed(() => navigationStore.expertMode);
 const activeSubtab = ref("pid");
 const showAllPids = ref(false);
 const isShareTuneOpen = ref(false);
+const isImportTuneOpen = ref(false);
 const currentProfile = ref(FC.CONFIG.profile);
 const currentRateProfile = ref(0);
 const isMounted = useIsMounted();
