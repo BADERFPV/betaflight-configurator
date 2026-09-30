@@ -2,7 +2,7 @@
     <Dialog
         :model-value="modelValue"
         :title="$t('pidTuningImportTuneTitle')"
-        :closeable="state !== 'applying'"
+        :closeable="state !== 'applying' && state !== 'errors'"
         @update:model-value="onOpenChange"
     >
         <div class="flex flex-col gap-3 text-sm">
@@ -180,6 +180,7 @@ import {
     type TuneSection,
     decodeTune,
     findTuneCode,
+    isRpmFilterActive,
     sameSettingValue,
     validateTune,
 } from "@/js/utils/tuneShare";
@@ -217,13 +218,8 @@ const changed = computed(() =>
 );
 const unchangedCount = computed(() => rows.value.filter((row) => sameSettingValue(row.current, row.value)).length);
 
-/** RPM filtering is live only when the ESCs report RPM and the filter has harmonics to track. */
-function isRpmFilterActive(): boolean {
-    return Boolean(FC.MOTOR_CONFIG?.use_dshot_telemetry) && (FC.FILTER_CONFIG?.gyro_rpm_notch_harmonics ?? 0) > 0;
-}
-
 // Filters tuned around RPM filtering are too light without it: warn before hot motors, not after.
-const rpmMismatch = computed(() => origin.value.rpmFilter && !isRpmFilterActive());
+const rpmMismatch = computed(() => origin.value.rpmFilter && !isRpmFilterActive(FC.MOTOR_CONFIG, FC.FILTER_CONFIG));
 
 /** Different firmware lines can rename or rescale settings; the version string up to the patch level tells. */
 const firmwareMismatch = computed(() => {

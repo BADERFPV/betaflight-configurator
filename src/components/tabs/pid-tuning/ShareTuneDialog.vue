@@ -68,7 +68,14 @@ import FC from "@/js/fc";
 import Clipboard from "@/js/Clipboard";
 import { useConnectionStore } from "@/stores/connection";
 import { MIN_FC_VERSION_FOR_MSP_CLI, isMspCliSupported, send } from "@/composables/useMspCliSession";
-import { encodeTune, extractTune, tuneSettingCount, tuneLink, tuneToCliCommands } from "@/js/utils/tuneShare";
+import {
+    encodeTune,
+    extractTune,
+    isRpmFilterActive,
+    tuneLink,
+    tuneSettingCount,
+    tuneToCliCommands,
+} from "@/js/utils/tuneShare";
 
 /** `diff` is a single CLI command, but a busy F4 can take a few seconds to print it. */
 const DIFF_TIMEOUT_MS = 10000;
@@ -92,11 +99,6 @@ const qrSvg = computed(() => (code.value ? renderSVG(tuneLink(code.value), { ecc
 
 function onOpenChange(open: boolean) {
     emit("update:modelValue", open);
-}
-
-/** RPM filtering is live only when the ESCs report RPM and the filter has harmonics to track. */
-function isRpmFilterActive(): boolean {
-    return Boolean(FC.MOTOR_CONFIG?.use_dshot_telemetry) && (FC.FILTER_CONFIG?.gyro_rpm_notch_harmonics ?? 0) > 0;
 }
 
 async function readTune() {
@@ -130,7 +132,10 @@ async function readTune() {
 
         commands.value = tuneToCliCommands(tune);
         code.value = await encodeTune({
-            origin: { firmware: FC.CONFIG.flightControllerVersion ?? "", rpmFilter: isRpmFilterActive() },
+            origin: {
+                firmware: FC.CONFIG.flightControllerVersion ?? "",
+                rpmFilter: isRpmFilterActive(FC.MOTOR_CONFIG, FC.FILTER_CONFIG),
+            },
             tune,
         });
         state.value = "ready";

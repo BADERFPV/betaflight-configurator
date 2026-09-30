@@ -261,13 +261,14 @@ export function initializeSerialBackend() {
         serial.forceClose();
     });
 
-    // After the transports are wired up: a manual/network target needs no device enumeration,
-    // so a shared connect link can open right away.
-    // A shared tune link waits for an aircraft; tell the user what to do next.
+    // A shared tune link waits for an aircraft; tell the user what to do next. Taken before the
+    // connect link below, so a link carrying both opens the connection and then offers the tune.
     if (captureTuneDeeplink()) {
         gui_log(i18n.getMessage("pidTuningImportTuneLinkWaiting"));
     }
 
+    // After the transports are wired up: a manual/network target needs no device enumeration,
+    // so a shared connect link can open right away.
     connectFromDeeplink();
 }
 

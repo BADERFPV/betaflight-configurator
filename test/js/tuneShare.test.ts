@@ -7,6 +7,7 @@ import {
     encodeTune,
     extractTune,
     findTuneCode,
+    isRpmFilterActive,
     parseTuneDeeplink,
     sameSettingValue,
     tuneLink,
@@ -271,5 +272,18 @@ describe("parseTuneDeeplink", () => {
 
     it("refuses an oversized code", () => {
         expect(parseTuneDeeplink(`?tune=${TUNE_CODE_PREFIX}${"A".repeat(9000)}`)).toBe(null);
+    });
+});
+
+describe("isRpmFilterActive", () => {
+    it.each([
+        [true, 3, true],
+        [true, 0, false],
+        [false, 3, false],
+        [undefined, undefined, false],
+    ])("telemetry %s, harmonics %s → %s", (telemetry, harmonics, expected) => {
+        expect(isRpmFilterActive({ use_dshot_telemetry: telemetry }, { gyro_rpm_notch_harmonics: harmonics })).toBe(
+            expected,
+        );
     });
 });

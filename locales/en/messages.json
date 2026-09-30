@@ -2528,7 +2528,7 @@
         "description": "Button on the PID Tuning tab that opens the Share tune dialog"
     },
     "pidTuningShareTuneSaveFirst": {
-        "message": "Save or discard your changes first — the tune is read from the flight controller.",
+        "message": "Save or discard your changes first.",
         "description": "Tooltip on the disabled Share tune button while there are unsaved changes"
     },
     "pidTuningShareTuneTitle": {

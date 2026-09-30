@@ -564,3 +564,15 @@ export function parseTuneDeeplink(search: string): string | null {
     const code = (value ?? "").replace(/\s+/g, "");
     return code.startsWith(TUNE_CODE_PREFIX) && code.length <= MAX_CODE_LENGTH ? code : null;
 }
+
+/**
+ * RPM filtering is live only when the ESCs report RPM (bidirectional DShot) and the filter has
+ * harmonics to track. Recorded when sharing, compared when importing: filters tuned around RPM
+ * filtering are too light without it.
+ */
+export function isRpmFilterActive(
+    motorConfig?: { use_dshot_telemetry?: boolean },
+    filterConfig?: { gyro_rpm_notch_harmonics?: number },
+): boolean {
+    return Boolean(motorConfig?.use_dshot_telemetry) && (filterConfig?.gyro_rpm_notch_harmonics ?? 0) > 0;
+}
