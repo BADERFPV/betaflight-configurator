@@ -47,6 +47,16 @@
 
                 <!-- Header Buttons (scoped per subtab) -->
                 <div class="flex gap-2 flex-wrap ml-auto">
+                    <UTooltip :text="$t('pidTuningShareTuneSaveFirst')" :disabled="!hasChanges">
+                        <UButton
+                            :label="$t('pidTuningShareTune')"
+                            icon="i-lucide-share-2"
+                            color="neutral"
+                            variant="outline"
+                            :disabled="hasChanges"
+                            @click="isShareTuneOpen = true"
+                        />
+                    </UTooltip>
                     <UButton
                         v-if="activeSubtab === 'pid'"
                         :label="$t('pidTuningCopyProfile')"
@@ -99,6 +109,8 @@
                 </form>
             </div>
 
+            <ShareTuneDialog v-model="isShareTuneOpen" />
+
             <!-- Save/Revert Buttons -->
             <div class="content_toolbar toolbar_fixed_bottom flex items-center gap-2">
                 <UButton
@@ -129,6 +141,7 @@ import WikiButton from "@/components/elements/WikiButton.vue";
 import PidSubTab from "./pid-tuning/PidSubTab.vue";
 import RatesSubTab from "./pid-tuning/RatesSubTab.vue";
 import FilterSubTab from "./pid-tuning/FilterSubTab.vue";
+import ShareTuneDialog from "./pid-tuning/ShareTuneDialog.vue";
 import SettingRow from "../elements/SettingRow.vue";
 import SubtabNav from "@/components/elements/SubtabNav.vue";
 import GUI from "@/js/gui";
@@ -164,6 +177,7 @@ const dialog = useDialog();
 const expertModeEnabled = computed(() => navigationStore.expertMode);
 const activeSubtab = ref("pid");
 const showAllPids = ref(false);
+const isShareTuneOpen = ref(false);
 const currentProfile = ref(FC.CONFIG.profile);
 const currentRateProfile = ref(0);
 const isMounted = useIsMounted();

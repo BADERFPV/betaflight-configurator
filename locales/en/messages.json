@@ -2523,6 +2523,48 @@
     "pidTuningCopyRateProfile": {
         "message": "Copy rateprofile"
     },
+    "pidTuningShareTune": {
+        "message": "Share tune",
+        "description": "Button on the PID Tuning tab that opens the Share tune dialog"
+    },
+    "pidTuningShareTuneSaveFirst": {
+        "message": "Save or discard your changes first — the tune is read from the flight controller.",
+        "description": "Tooltip on the disabled Share tune button while there are unsaved changes"
+    },
+    "pidTuningShareTuneTitle": {
+        "message": "Share tune",
+        "description": "Title of the Share tune dialog"
+    },
+    "pidTuningShareTuneReading": {
+        "message": "Reading the tune from the flight controller…"
+    },
+    "pidTuningShareTuneIntro": {
+        "message": "Send this code to another pilot. It carries only the PIDs, rates and filters of the active profiles — no ports, modes, motor or receiver settings.",
+        "description": "Explanation shown above the tune share code"
+    },
+    "pidTuningShareTuneQrLabel": {
+        "message": "QR code of the tune",
+        "description": "Accessible label for the QR code in the Share tune dialog"
+    },
+    "pidTuningShareTuneCount": {
+        "message": "{{count}} settings differ from defaults",
+        "description": "Summary above the list of settings included in a shared tune"
+    },
+    "pidTuningShareTuneEmpty": {
+        "message": "The active PID and rate profiles are at their defaults, so there is no tune to share."
+    },
+    "pidTuningShareTuneCopy": {
+        "message": "Copy code"
+    },
+    "pidTuningShareTuneCopied": {
+        "message": "Copied"
+    },
+    "pidTuningShareTuneVirtualMode": {
+        "message": "Sharing a tune needs the CLI, which is not available in Virtual Mode."
+    },
+    "pidTuningShareTuneError": {
+        "message": "Could not read the tune from the flight controller: {{error}}"
+    },
     "dialogCopyProfileText": {
         "message": "Copy values from current profile to"
     },
